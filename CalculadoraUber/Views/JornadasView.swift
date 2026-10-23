@@ -2,13 +2,23 @@ import SwiftUI
 import SwiftData
 
 struct JornadasView: View {
+    @Environment(\.modelContext) private var modelContext
+    /// De la jornada más reciente a la más antigua.
     @Query(sort: \Jornada.fecha, order: .reverse) private var jornadas: [Jornada]
     @State private var mostrandoNuevaJornada = false
 
     var body: some View {
         NavigationStack {
-            List(jornadas) { jornada in
-                JornadaFila(jornada: jornada)
+            List {
+                ForEach(jornadas) { jornada in
+                    NavigationLink(value: jornada) {
+                        JornadaFila(jornada: jornada)
+                    }
+                }
+                .onDelete(perform: borrar)
+            }
+            .navigationDestination(for: Jornada.self) { jornada in
+                JornadaDetalleView(jornada: jornada)
             }
             .overlay {
                 if jornadas.isEmpty {
@@ -28,8 +38,14 @@ struct JornadasView: View {
                 }
             }
             .sheet(isPresented: $mostrandoNuevaJornada) {
-                NuevaJornadaView()
+                JornadaFormView()
             }
+        }
+    }
+
+    private func borrar(en indices: IndexSet) {
+        for indice in indices {
+            modelContext.delete(jornadas[indice])
         }
     }
 }

@@ -1,19 +1,33 @@
 import SwiftUI
 import SwiftData
 
-struct NuevaJornadaView: View {
+/// Formulario para crear una jornada nueva o editar una existente.
+struct JornadaFormView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
     @AppStorage("ultimoRendimiento") private var ultimoRendimiento: Double = 0
     @AppStorage("ultimoPrecioBencina") private var ultimoPrecioBencina: Int = 0
 
-    @State private var fecha = Date.now
-    @State private var montoTexto = ""
-    @State private var kmTexto = ""
-    @State private var minutosTexto = ""
-    @State private var rendimientoTexto = ""
-    @State private var precioTexto = ""
+    /// Jornada que se edita; `nil` al crear una nueva.
+    private let jornada: Jornada?
+
+    @State private var fecha: Date
+    @State private var montoTexto: String
+    @State private var kmTexto: String
+    @State private var minutosTexto: String
+    @State private var rendimientoTexto: String
+    @State private var precioTexto: String
+
+    init(jornada: Jornada? = nil) {
+        self.jornada = jornada
+        _fecha = State(initialValue: jornada?.fecha ?? .now)
+        _montoTexto = State(initialValue: jornada.map { String($0.montoGenerado) } ?? "")
+        _kmTexto = State(initialValue: jornada.map { Self.texto($0.kmRecorridos) } ?? "")
+        _minutosTexto = State(initialValue: jornada.map { String($0.minutosTrabajados) } ?? "")
+        _rendimientoTexto = State(initialValue: jornada.map { Self.texto($0.rendimiento) } ?? "")
+        _precioTexto = State(initialValue: jornada.map { String($0.precioBencina) } ?? "")
+    }
 
     var body: some View {
         NavigationStack {
@@ -31,23 +45,15 @@ struct NuevaJornadaView: View {
                 } header: {
                     Text("Combustible")
                 } footer: {
-                    Text("Se recuerdan los últimos valores usados.")
+                    if jornada == nil {
+                        Text("Se recuerdan los últimos valores usados.")
+                    }
                 }
 
-                Section("Resultados") {
-                    resultado("Litros usados", calculo.litrosUsados.map { "\(Formato.numero($0, decimales: 2)) L" })
-                    resultado("Gasto en bencina", calculo.gastoBencina.map(Formato.pesos))
-                    LabeledContent("Ganancia neta") {
-                        Text(calculo.gananciaNeta.map(Formato.pesos) ?? "—")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(Color.ganancia(calculo.gananciaNeta))
-                    }
-                    resultado("Ganancia por hora", calculo.gananciaPorHora.map { "\(Formato.pesos($0))/h" })
-                    resultado("Ganancia por km", calculo.gananciaPorKm.map { "\(Formato.pesos($0))/km" })
-                }
+                SeccionResultados(calculo: calculo)
             }
             .scrollDismissesKeyboard(.interactively)
-            .navigationTitle("Nueva jornada")
+            .navigationTitle(jornada == nil ? "Nueva jornada" : "Editar jornada")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -85,9 +91,11 @@ struct NuevaJornadaView: View {
         return km > 0 && minutos > 0 && rendimiento > 0 && precio > 0
     }
 
+    /// Al crear una jornada, propone el último rendimiento y precio usados.
     private func cargarUltimosValores() {
+        guard jornada == nil else { return }
         if rendimientoTexto.isEmpty && ultimoRendimiento > 0 {
-            rendimientoTexto = Formato.numero(ultimoRendimiento, decimales: 2)
+            rendimientoTexto = Self.texto(ultimoRendimiento)
         }
         if precioTexto.isEmpty && ultimoPrecioBencina > 0 {
             precioTexto = String(ultimoPrecioBencina)
@@ -96,22 +104,36 @@ struct NuevaJornadaView: View {
 
     private func guardar() {
         guard puedeGuardar, let monto, let km, let minutos, let rendimiento, let precio else { return }
-        modelContext.insert(
-            Jornada(
-                fecha: fecha,
-                montoGenerado: monto,
-                kmRecorridos: km,
-                minutosTrabajados: minutos,
-                rendimiento: rendimiento,
-                precioBencina: precio
+        if let jornada {
+            jornada.fecha = fecha
+            jornada.montoGenerado = monto
+            jornada.kmRecorridos = km
+            jornada.minutosTrabajados = minutos
+            jornada.rendimiento = rendimiento
+            jornada.precioBencina = precio
+        } else {
+            modelContext.insert(
+                Jornada(
+                    fecha: fecha,
+                    montoGenerado: monto,
+                    kmRecorridos: km,
+                    minutosTrabajados: minutos,
+                    rendimiento: rendimiento,
+                    precioBencina: precio
+                )
             )
-        )
-        ultimoRendimiento = rendimiento
-        ultimoPrecioBencina = precio
+            ultimoRendimiento = rendimiento
+            ultimoPrecioBencina = precio
+        }
         dismiss()
     }
 
     // MARK: - Lectura de texto
+
+    /// Texto editable para un decimal, sin perder precisión al volver a leerlo.
+    private static func texto(_ valor: Double) -> String {
+        Formato.numero(valor, decimales: 6)
+    }
 
     /// Entero no negativo; ignora puntos de miles ("12.345").
     private static func entero(_ texto: String) -> Int? {
@@ -149,13 +171,9 @@ struct NuevaJornadaView: View {
             }
         }
     }
-
-    private func resultado(_ titulo: String, _ valor: String?) -> some View {
-        LabeledContent(titulo, value: valor ?? "—")
-    }
 }
 
 #Preview {
-    NuevaJornadaView()
+    JornadaFormView()
         .modelContainer(for: Jornada.self, inMemory: true)
 }
