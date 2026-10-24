@@ -1,16 +1,16 @@
 :root {
-  --bg: #0B0F14;
-  --card: #141A22;
-  --card-2: #1B232D;
-  --borde: #26303C;
-  --texto: #E8EDF3;
-  --muted: #8D9AAB;
-  --verde: #10B981;
-  --verde-suave: rgba(16, 185, 129, .14);
-  --rojo: #EF4444;
-  --rojo-suave: rgba(239, 68, 68, .14);
-  --amarillo: #F5B70B;
-  --amarillo-suave: rgba(245, 183, 11, .14);
+  --bg: #0D0D0B;
+  --card: #181813;
+  --card-2: #23221B;
+  --borde: #36342A;
+  --texto: #EDE3CF;
+  --muted: #A69D88;
+  --verde: #8A9A5B;
+  --verde-suave: rgba(138, 154, 91, .16);
+  --rojo: #C8553D;
+  --rojo-suave: rgba(200, 85, 61, .16);
+  --amarillo: #D9A441;
+  --amarillo-suave: rgba(217, 164, 65, .16);
   --radio: 18px;
   --nav-alto: 64px;
   --safe-top: env(safe-area-inset-top, 0px);
@@ -44,7 +44,7 @@ h2 { font-size: 20px; margin-bottom: 14px; }
   position: sticky; top: 0; z-index: 20;
   display: flex; align-items: center; justify-content: space-between;
   padding: calc(var(--safe-top) + 10px) 16px 10px;
-  background: rgba(11, 15, 20, .92);
+  background: rgba(13, 13, 11, .92);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--borde);
 }
@@ -74,7 +74,7 @@ main {
   padding: 18px;
   margin-bottom: 14px;
 }
-.card.aviso { background: var(--verde-suave); border-color: rgba(16, 185, 129, .35); }
+.card.aviso { background: rgba(237, 227, 207, .08); border-color: rgba(237, 227, 207, .3); }
 .card.aviso p { margin: 0 0 8px; }
 .link { background: none; border: 0; padding: 4px 0; color: var(--verde); font-weight: 600; }
 
@@ -101,9 +101,9 @@ main {
   transition: transform .08s, opacity .15s;
 }
 .btn:active { transform: scale(.98); }
-.btn-primary { background: var(--verde); color: #04261A; }
+.btn-primary { background: var(--verde); color: #12140C; }
 .btn-ghost { background: var(--card-2); border: 1px solid var(--borde); }
-.btn-danger { background: var(--rojo-suave); color: var(--rojo); border: 1px solid rgba(239, 68, 68, .4); }
+.btn-danger { background: var(--rojo-suave); color: var(--rojo); border: 1px solid rgba(200, 85, 61, .45); }
 .btn-danger.solido { background: var(--rojo); color: #fff; }
 .btn-block { width: 100%; margin-top: 10px; }
 .btn-xl { width: 100%; min-height: 64px; font-size: 20px; border-radius: 18px; }
@@ -171,14 +171,14 @@ input[type="date"]:focus { border-color: var(--verde); outline: none; }
 }
 .stepper small { color: var(--muted); font-size: 12px; }
 .stepper li.hecho span { background: var(--verde-suave); border-color: var(--verde); color: var(--verde); cursor: pointer; }
-.stepper li.actual span { background: var(--verde); border-color: var(--verde); color: #04261A; }
+.stepper li.actual span { background: var(--verde); border-color: var(--verde); color: #12140C; }
 .stepper li.actual small { color: var(--texto); font-weight: 600; }
 
 .wizard-nav {
   position: sticky; bottom: calc(var(--nav-alto) + var(--safe-bottom) + 8px);
   display: grid; grid-template-columns: 1fr 2fr; gap: 10px;
   margin: 0 -16px; padding: 10px 16px 8px;
-  background: linear-gradient(to bottom, rgba(11, 15, 20, 0), var(--bg) 14px);
+  background: linear-gradient(to bottom, rgba(13, 13, 11, 0), var(--bg) 14px);
 }
 .wizard-nav.solo { grid-template-columns: 1fr; }
 
@@ -190,8 +190,8 @@ input[type="date"]:focus { border-color: var(--verde); outline: none; }
 .desglose li.total span:first-child { color: var(--texto); }
 
 .resultado-neto { text-align: center; }
-.resultado-neto.pos { background: var(--verde-suave); border-color: rgba(16, 185, 129, .45); }
-.resultado-neto.neg { background: var(--rojo-suave); border-color: rgba(239, 68, 68, .45); }
+.resultado-neto.pos { background: var(--verde-suave); border-color: rgba(138, 154, 91, .5); }
+.resultado-neto.neg { background: var(--rojo-suave); border-color: rgba(200, 85, 61, .5); }
 .resultado-neto .monto-xl { font-size: 50px; }
 .resultado-neto .metricas, .metricas.cuatro { grid-template-columns: 1fr 1fr; }
 
@@ -232,7 +232,7 @@ input[type="date"]:focus { border-color: var(--verde); outline: none; }
   display: grid; grid-template-columns: repeat(4, 1fr);
   height: calc(var(--nav-alto) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
-  background: rgba(14, 19, 26, .96);
+  background: rgba(18, 18, 14, .96);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   border-top: 1px solid var(--borde);
 }
