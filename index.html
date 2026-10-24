@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CalculaTuRuta</title>
+  <meta name="description" content="Calcula tu ganancia real como conductor de Uber, DiDi, Cabify e InDrive en Chile.">
+  <meta name="theme-color" content="#0B0F14">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CalculaTuRuta">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="icons/icon.svg" alt="" width="30" height="30">
+      <h1 id="titulo">CalculaTuRuta</h1>
+    </div>
+    <button id="btn-ajustes" class="icon-btn" type="button" aria-label="Ajustes">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </header>
+
+  <main id="app">
+    <!-- ============ INICIO ============ -->
+    <section id="view-inicio" class="view" data-titulo="CalculaTuRuta">
+      <div id="aviso-instalar" class="card aviso" hidden>
+        <p><strong>Instálala en tu iPhone:</strong> toca <em>Compartir</em> <span aria-hidden="true">⬆︎</span> y luego <em>“Agregar a pantalla de inicio”</em>. Funciona sin internet.</p>
+        <button type="button" class="link" id="cerrar-aviso">Entendido</button>
+      </div>
+      <div id="panel"></div>
+      <button type="button" class="btn btn-primary btn-xl" id="btn-terminar">Terminar jornada</button>
+    </section>
+
+    <!-- ============ REGISTRAR ============ -->
+    <section id="view-registrar" class="view" data-titulo="Registrar jornada" hidden>
+      <div id="banner-edicion" class="card aviso" hidden>
+        <p>Estás editando la jornada del <strong id="edicion-fecha"></strong>.</p>
+        <button type="button" class="link" id="cancelar-edicion">Cancelar edición</button>
+      </div>
+
+      <ol class="stepper" id="stepper">
+        <li data-paso="1"><span>1</span><small>Jornada</small></li>
+        <li data-paso="2"><span>2</span><small>Auto</small></li>
+        <li data-paso="3"><span>3</span><small>Comisión</small></li>
+        <li data-paso="4"><span>4</span><small>Resultado</small></li>
+      </ol>
+
+      <!-- Paso 1 -->
+      <div class="paso card" data-paso="1">
+        <h2>¿Cómo te fue hoy?</h2>
+        <label class="field"><span>Fecha</span>
+          <input type="date" id="w-fecha">
+          <small class="err"></small>
+        </label>
+        <div class="field"><span>Plataforma</span>
+          <div class="chips" data-group="plataforma">
+            <button type="button" data-v="Uber">Uber</button>
+            <button type="button" data-v="DiDi">DiDi</button>
+            <button type="button" data-v="Cabify">Cabify</button>
+            <button type="button" data-v="InDrive">InDrive</button>
+            <button type="button" data-v="Otra">Otra</button>
+          </div>
+          <small class="err" data-err="plataforma"></small>
+        </div>
+        <label class="field"><span>Monto generado</span>
+          <div class="input-wrap"><em>$</em><input id="w-generado" inputmode="numeric" data-money placeholder="0" autocomplete="off"></div>
+          <small class="err"></small>
+        </label>
+        <label class="field"><span>Km recorridos</span>
+          <div class="input-wrap"><input id="w-km" inputmode="decimal" placeholder="0,0" autocomplete="off"><em>km</em></div>
+          <small class="err"></small>
+        </label>
+        <div class="field"><span>Tiempo trabajado</span>
+          <div class="row2">
+            <div class="input-wrap"><input id="w-horas" inputmode="numeric" placeholder="0" autocomplete="off" aria-label="Horas"><em>h</em></div>
+            <div class="input-wrap"><input id="w-min" inputmode="numeric" placeholder="0" autocomplete="off" aria-label="Minutos"><em>min</em></div>
+          </div>
+          <small class="err" data-err="tiempo"></small>
+        </div>
+      </div>
+
+      <!-- Paso 2 -->
+      <div class="paso card" data-paso="2" hidden>
+        <h2>Tu auto</h2>
+        <div class="field"><span>El auto es…</span>
+          <div class="chips seg" data-group="tipoAuto">
+            <button type="button" data-v="propio">Propio</button>
+            <button type="button" data-v="arrendado">Arrendado</button>
+          </div>
+        </div>
+        <label class="field" id="wrap-arriendo" hidden><span>Costo de arriendo diario</span>
+          <div class="input-wrap"><em>$</em><input id="w-arriendo" inputmode="numeric" data-money placeholder="0" autocomplete="off"></div>
+          <small class="err"></small>
+        </label>
+        <label class="field"><span>Rendimiento</span>
+          <div class="input-wrap"><input id="w-rend" inputmode="decimal" placeholder="12" autocomplete="off"><em>km/L</em></div>
+          <small class="err"></small>
+        </label>
+        <label class="field"><span>Precio de la bencina</span>
+          <div class="input-wrap"><em>$</em><input id="w-bencina" inputmode="numeric" data-money placeholder="0" autocomplete="off"><em>por litro</em></div>
+          <small class="err"></small>
+        </label>
+        <div class="field"><span>Desgaste del auto <small class="hint">(neumáticos, mantención, depreciación)</small></span>
+          <div class="chips grid2" data-group="desgaste">
+            <button type="button" data-v="bajo">Bajo<br><small data-desg="bajo"></small></button>
+            <button type="button" data-v="medio">Medio<br><small data-desg="medio"></small></button>
+            <button type="button" data-v="alto">Alto<br><small data-desg="alto"></small></button>
+            <button type="button" data-v="mio">Mi valor<br><small>tú decides</small></button>
+          </div>
+        </div>
+        <label class="field" id="wrap-desgaste" hidden><span>Mi desgaste por km</span>
+          <div class="input-wrap"><em>$</em><input id="w-desgaste" inputmode="numeric" data-money placeholder="0" autocomplete="off"><em>por km</em></div>
+          <small class="err"></small>
+        </label>
+      </div>
+
+      <!-- Paso 3 -->
+      <div class="paso card" data-paso="3" hidden>
+        <h2>Comisión de la app</h2>
+        <div class="field"><span>¿El monto que ingresaste ya viene con la comisión descontada?</span>
+          <div class="chips seg" data-group="descontada">
+            <button type="button" data-v="si">Sí, ya viene descontada</button>
+            <button type="button" data-v="no">No</button>
+          </div>
+        </div>
+        <div id="wrap-comision" hidden>
+          <div class="field"><span>% de comisión</span>
+            <div class="chips grid5" data-group="comision">
+              <button type="button" data-v="10">10%</button>
+              <button type="button" data-v="15">15%</button>
+              <button type="button" data-v="20">20%</button>
+              <button type="button" data-v="25">25%</button>
+              <button type="button" data-v="otro">Otro</button>
+            </div>
+          </div>
+          <label class="field" id="wrap-comision-otro" hidden><span>Mi % de comisión</span>
+            <div class="input-wrap"><input id="w-comision" inputmode="decimal" placeholder="0" autocomplete="off"><em>%</em></div>
+            <small class="err"></small>
+          </label>
+        </div>
+      </div>
+
+      <!-- Paso 4 -->
+      <div class="paso" data-paso="4" hidden>
+        <div id="resultado"></div>
+      </div>
+
+      <div class="wizard-nav">
+        <button type="button" class="btn btn-ghost" id="w-atras">Atrás</button>
+        <button type="button" class="btn btn-primary" id="w-sig">Siguiente</button>
+      </div>
+    </section>
+
+    <!-- ============ ¿CONVIENE? ============ -->
+    <section id="view-conviene" class="view" data-titulo="¿Conviene este viaje?" hidden>
+      <div class="card">
+        <label class="field"><span>Precio ofrecido</span>
+          <div class="input-wrap big"><em>$</em><input id="c-precio" inputmode="numeric" data-money placeholder="0" autocomplete="off"></div>
+          <small class="err"></small>
+        </label>
+        <div class="row2">
+          <label class="field"><span>Km hasta recoger</span>
+            <div class="input-wrap"><input id="c-recoger" inputmode="decimal" placeholder="0,0" autocomplete="off"><em>km</em></div>
+            <small class="err"></small>
+          </label>
+          <label class="field"><span>Km del viaje</span>
+            <div class="input-wrap"><input id="c-viaje" inputmode="decimal" placeholder="0,0" autocomplete="off"><em>km</em></div>
+            <small class="err"></small>
+          </label>
+        </div>
+        <div class="field"><span>¿Al precio hay que restarle la comisión de la app?</span>
+          <div class="chips seg" data-group="cComision">
+            <button type="button" data-v="no">No, es lo que recibo</button>
+            <button type="button" data-v="si" id="c-com-si">Sí</button>
+          </div>
+        </div>
+      </div>
+      <div id="veredicto"></div>
+      <div id="equilibrio"></div>
+    </section>
+
+    <!-- ============ HISTORIAL ============ -->
+    <section id="view-historial" class="view" data-titulo="Historial" hidden>
+      <div class="card">
+        <div class="chips seg" data-group="histModo">
+          <button type="button" data-v="semana">Semana</button>
+          <button type="button" data-v="mes">Mes</button>
+        </div>
+        <div class="periodo-nav">
+          <button type="button" class="icon-btn" id="h-prev" aria-label="Período anterior">‹</button>
+          <strong id="h-titulo"></strong>
+          <button type="button" class="icon-btn" id="h-next" aria-label="Período siguiente">›</button>
+        </div>
+        <div id="h-resumen"></div>
+        <div id="h-grafico" class="grafico"></div>
+      </div>
+      <h2 class="seccion">Jornadas</h2>
+      <ul id="h-lista" class="lista"></ul>
+    </section>
+
+    <!-- ============ AJUSTES ============ -->
+    <section id="view-ajustes" class="view" data-titulo="Ajustes" hidden>
+      <div class="card">
+        <h2>Valores por defecto</h2>
+        <p class="muted">Se usan en tu próxima jornada y en “¿Conviene?”.</p>
+        <label class="field"><span>Rendimiento</span>
+          <div class="input-wrap"><input id="a-rend" inputmode="decimal" autocomplete="off"><em>km/L</em></div><small class="err"></small></label>
+        <label class="field"><span>Precio de la bencina</span>
+          <div class="input-wrap"><em>$</em><input id="a-bencina" inputmode="numeric" data-money autocomplete="off"><em>por litro</em></div><small class="err"></small></label>
+        <label class="field"><span>Comisión por defecto</span>
+          <div class="input-wrap"><input id="a-comision" inputmode="decimal" autocomplete="off"><em>%</em></div><small class="err"></small></label>
+        <div class="field"><span>Desgaste por km</span>
+          <div class="row3">
+            <label class="mini"><small>Bajo</small><div class="input-wrap"><em>$</em><input id="a-bajo" inputmode="numeric" data-money autocomplete="off"></div></label>
+            <label class="mini"><small>Medio</small><div class="input-wrap"><em>$</em><input id="a-medio" inputmode="numeric" data-money autocomplete="off"></div></label>
+            <label class="mini"><small>Alto</small><div class="input-wrap"><em>$</em><input id="a-alto" inputmode="numeric" data-money autocomplete="off"></div></label>
+          </div>
+          <small class="err" data-err="desgaste"></small>
+        </div>
+        <label class="field"><span>Meta diaria de ganancia neta</span>
+          <div class="input-wrap"><em>$</em><input id="a-meta" inputmode="numeric" data-money autocomplete="off"></div><small class="err"></small></label>
+        <label class="field"><span>Margen para “Conviene” <small class="hint">(cuánto sobre tu costo)</small></span>
+          <div class="input-wrap"><input id="a-margen" inputmode="decimal" autocomplete="off"><em>%</em></div><small class="err"></small></label>
+        <button type="button" class="btn btn-primary btn-block" id="a-guardar">Guardar ajustes</button>
+      </div>
+
+      <div class="card">
+        <h2>Respaldo</h2>
+        <p class="muted">Tus datos se guardan solo en este teléfono. Exporta un respaldo de vez en cuando.</p>
+        <button type="button" class="btn btn-ghost btn-block" id="a-exportar">Exportar a CSV</button>
+        <button type="button" class="btn btn-ghost btn-block" id="a-importar">Importar desde CSV</button>
+        <input type="file" id="a-archivo" accept=".csv,text/csv,text/plain" hidden>
+      </div>
+
+      <div class="card">
+        <h2>Zona de peligro</h2>
+        <button type="button" class="btn btn-danger btn-block" id="a-borrar">Borrar todos los datos</button>
+      </div>
+      <p class="muted center small" id="version"></p>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="Navegación principal">
+    <button type="button" data-view="inicio" aria-label="Inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg>
+      <span>Inicio</span>
+    </button>
+    <button type="button" data-view="registrar" aria-label="Registrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+      <span>Registrar</span>
+    </button>
+    <button type="button" data-view="conviene" aria-label="¿Conviene?">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 21h14"/><path d="M4 7h16"/><path d="m4 7-2.5 6a3 3 0 0 0 5 0L4 7zM20 7l-2.5 6a3 3 0 0 0 5 0L20 7z"/></svg>
+      <span>¿Conviene?</span>
+    </button>
+    <button type="button" data-view="historial" aria-label="Historial">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+      <span>Historial</span>
+    </button>
+  </nav>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-fondo" data-cerrar></div>
+    <div class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <h2 id="modal-titulo"></h2>
+      <div id="modal-cuerpo"></div>
+      <div id="modal-botones" class="modal-botones"></div>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
