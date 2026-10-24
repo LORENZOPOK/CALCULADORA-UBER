@@ -293,10 +293,11 @@ function tarjetaPeriodo(etiqueta, t, conMeta) {
     <div class="${grande} ${t.n ? claseSigno(t.neta) : ''}">${clp(t.neta)}</div>
     <div class="muted small">ganancia neta</div>
     ${meta}
-    <div class="metricas">
+    <div class="metricas cuatro">
       <div class="metrica"><small>$/km neto</small><strong>${clp(t.porKm)}</strong></div>
       <div class="metrica"><small>$/hora neto</small><strong>${clp(t.porHora)}</strong></div>
       <div class="metrica"><small>Km</small><strong>${dec(t.km, 1)}</strong></div>
+      <div class="metrica"><small>Horas trabajadas</small><strong>${horasTxt(t.minutos)}</strong></div>
     </div>
   </div>`;
 }

@@ -1,6 +1,6 @@
 // Service worker de CalculaTuRuta: guarda la app en el teléfono para usarla sin internet.
 // Al publicar cambios, sube el número de versión para que los teléfonos descarguen lo nuevo.
-const CACHE = 'calculaturuta-v1';
+const CACHE = 'calculaturuta-v2';
 const ARCHIVOS = [
   './',
   './index.html',

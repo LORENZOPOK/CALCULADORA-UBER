@@ -193,7 +193,7 @@ input[type="date"]:focus { border-color: var(--verde); outline: none; }
 .resultado-neto.pos { background: var(--verde-suave); border-color: rgba(16, 185, 129, .45); }
 .resultado-neto.neg { background: var(--rojo-suave); border-color: rgba(239, 68, 68, .45); }
 .resultado-neto .monto-xl { font-size: 50px; }
-.resultado-neto .metricas { grid-template-columns: 1fr 1fr; }
+.resultado-neto .metricas, .metricas.cuatro { grid-template-columns: 1fr 1fr; }
 
 /* ---------- ¿Conviene? ---------- */
 .veredicto { text-align: center; padding: 22px 18px; }
