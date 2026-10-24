@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#17497C"/>
+      <stop offset="1" stop-color="#0A1D31"/>
+    </linearGradient>
+    <radialGradient id="brillo" cx="512" cy="300" r="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#34E39A" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#34E39A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="verde" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34E39A"/>
+      <stop offset="1" stop-color="#12B76A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#fondo)"/>
+  <rect width="1024" height="1024" fill="url(#brillo)"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M 663.6 418.7 C 647.7 365.7 589.4 344.5 512.0 344.5 C 425.1 344.5 356.2 381.6 356.2 450.5 C 356.2 519.4 425.1 540.6 512.0 551.2 C 605.3 563.9 671.0 588.3 671.0 657.2 C 671.0 726.1 600.0 757.9 512.0 757.9 C 435.7 757.9 375.3 736.7 359.4 683.7" stroke="#FFFFFF" stroke-width="110.2"/>
+    <path d="M 663.6 418.7 C 647.7 365.7 589.4 344.5 512.0 344.5 C 425.1 344.5 356.2 381.6 356.2 450.5 C 356.2 519.4 425.1 540.6 512.0 551.2 C 605.3 563.9 671.0 588.3 671.0 657.2 C 671.0 726.1 600.0 757.9 512.0 757.9 C 435.7 757.9 375.3 736.7 359.4 683.7" stroke="#FDB022" stroke-width="12.7" stroke-dasharray="31.8 29.7"/>
+  </g>
+  <path d="M 512.0 312.7 C 467.5 261.8 427.2 230.0 427.2 185.5 A 84.8 84.8 0 1 1 596.8 185.5 C 596.8 230.0 556.5 261.8 512.0 312.7 Z M 478.1 185.5 A 33.9 33.9 0 1 0 545.9 185.5 A 33.9 33.9 0 1 0 478.1 185.5 Z" fill="url(#verde)" fill-rule="evenodd"/>
+  <path d="M 469.6 880.9 A 42.4 42.4 0 1 0 554.4 880.9 A 42.4 42.4 0 1 0 469.6 880.9 Z M 495.0 880.9 A 17.0 17.0 0 1 0 529.0 880.9 A 17.0 17.0 0 1 0 495.0 880.9 Z" fill="url(#verde)" fill-rule="evenodd"/>
+</svg>
